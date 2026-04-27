@@ -16,6 +16,16 @@ class Perfil extends Model
 
     public function usuarios()
     {
-        return $this->hasMany(Usuario::class);
+        return $this->hasMany(Usuario::class, 'perfil_id');
+    }
+
+    public function permisos()
+    {
+        return $this->belongsToMany(
+            Permiso::class,
+            'perfil_permiso',
+            'perfil_id',
+            'permiso_id'
+        );
     }
 }

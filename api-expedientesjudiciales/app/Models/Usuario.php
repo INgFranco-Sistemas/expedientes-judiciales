@@ -75,4 +75,19 @@ class Usuario extends Authenticatable
     {
         return $this->hasMany(Auditoria::class, 'usuario_id');
     }
+
+    public function tienePermiso(string $codigo): bool
+    {
+        return $this->perfil()
+            ->whereHas('permisos', function ($query) use ($codigo) {
+                $query->where('codigo', $codigo)
+                    ->where('permisos.estado', true);
+            })
+            ->exists();
+    }
+
+    public function permisos()
+    {
+        return $this->perfil?->permisos ?? collect();
+    }
 }

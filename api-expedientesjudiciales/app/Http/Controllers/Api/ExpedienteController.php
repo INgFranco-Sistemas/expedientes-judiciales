@@ -22,17 +22,36 @@ class ExpedienteController extends Controller
         ])->orderBy('id', 'desc');
 
         if ($request->filled('buscar')) {
-            $buscar = $request->buscar;
+        $buscar = $request->buscar;
 
-            $query->where(function ($q) use ($buscar) {
-                $q->where('numero_expediente', 'ILIKE', "%{$buscar}%")
-                    ->orWhere('codigo_unico_interno', 'ILIKE', "%{$buscar}%")
-                    ->orWhere('pretensiones', 'ILIKE', "%{$buscar}%")
-                    ->orWhere('observaciones_generales', 'ILIKE', "%{$buscar}%")
-                    ->orWhereHas('partes', function ($sub) use ($buscar) {
-                        $sub->where('nombres_razon_social', 'ILIKE', "%{$buscar}%")
-                            ->orWhere('documento_identidad', 'ILIKE', "%{$buscar}%");
-                    });
+        $query->where(function ($q) use ($buscar) {
+            $q->where('numero_expediente', 'ILIKE', "%{$buscar}%")
+                ->orWhere('codigo_unico_interno', 'ILIKE', "%{$buscar}%")
+                ->orWhere('pretensiones', 'ILIKE', "%{$buscar}%")
+                ->orWhere('observaciones_generales', 'ILIKE', "%{$buscar}%")
+                ->orWhereHas('tipoExpediente', function ($sub) use ($buscar) {
+                    $sub->where('nombre', 'ILIKE', "%{$buscar}%");
+                })
+                ->orWhereHas('estadoExpediente', function ($sub) use ($buscar) {
+                    $sub->where('nombre', 'ILIKE', "%{$buscar}%");
+                })
+                ->orWhereHas('prioridad', function ($sub) use ($buscar) {
+                    $sub->where('nombre', 'ILIKE', "%{$buscar}%");
+                })
+                ->orWhereHas('encargadoActual', function ($sub) use ($buscar) {
+                    $sub->where('nombre_completo', 'ILIKE', "%{$buscar}%")
+                        ->orWhere('username', 'ILIKE', "%{$buscar}%");
+                })
+                ->orWhereHas('materia', function ($sub) use ($buscar) {
+                    $sub->where('nombre', 'ILIKE', "%{$buscar}%");
+                })
+                ->orWhereHas('especialidad', function ($sub) use ($buscar) {
+                    $sub->where('nombre', 'ILIKE', "%{$buscar}%");
+                })
+                ->orWhereHas('partes', function ($sub) use ($buscar) {
+                    $sub->where('nombres_razon_social', 'ILIKE', "%{$buscar}%")
+                        ->orWhere('documento_identidad', 'ILIKE', "%{$buscar}%");
+                });
             });
         }
 

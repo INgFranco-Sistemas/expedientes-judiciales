@@ -18,7 +18,7 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        $usuario = Usuario::with('perfil')
+        $usuario = Usuario::with('perfil.permisos')
             ->where('username', $request->username)
             ->first();
 
@@ -65,6 +65,7 @@ class AuthController extends Controller
                 'nombre_completo' => $usuario->nombre_completo,
                 'perfil' => $usuario->perfil?->nombre,
                 'estado_usuario' => $usuario->estado_usuario,
+                'permisos' => $usuario->perfil?->permisos->pluck('codigo')->values(),
             ],
         ]);
     }
@@ -72,7 +73,7 @@ class AuthController extends Controller
     public function me(Request $request)
     {
         return response()->json([
-            'usuario' => $request->user()->load(['perfil', 'especialidad']),
+            'usuario' => $request->user()->load(['perfil.permisos', 'especialidad']),
         ]);
     }
 
