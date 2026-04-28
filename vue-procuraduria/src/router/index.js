@@ -5,6 +5,8 @@ import LoginView from '@/views/auth/LoginView.vue'
 import DashboardView from '@/views/dashboard/DashboardView.vue'
 import NoAutorizadoView from '@/views/errores/NoAutorizadoView.vue'
 import ExpedienteListView from '@/views/expedientes/ExpedienteListView.vue'
+import ExpedienteCreateView from '@/views/expedientes/ExpedienteCreateView.vue'
+import ExpedienteShowView from '@/views/expedientes/ExpedienteShowView.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 
 const router = createRouter({
@@ -38,15 +40,31 @@ const router = createRouter({
                     name: 'expedientes',
                     component: ExpedienteListView,
                     meta: {
-                    permiso: 'expedientes.ver'
+                        permiso: 'expedientes.ver'
                     }
-                }
+                },
+                {
+                    path: 'expedientes/nuevo',
+                    name: 'expedientes-nuevo',
+                    component: ExpedienteCreateView,
+                    meta: {
+                        permiso: 'expedientes.crear'
+                    }
+                },
+                {
+                    path: 'expedientes/:id',
+                    name: 'expedientes-show',
+                    component: ExpedienteShowView,
+                    meta: {
+                        permiso: 'expedientes.ver'
+                    }
+                },
             ]
         },
-    {
-        path: '/no-autorizado',
-        name: 'no-autorizado',
-        component: NoAutorizadoView
+        {
+            path: '/no-autorizado',
+            name: 'no-autorizado',
+            component: NoAutorizadoView
         }
     ]
 })
