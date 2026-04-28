@@ -7,6 +7,9 @@ import NoAutorizadoView from '@/views/errores/NoAutorizadoView.vue'
 import ExpedienteListView from '@/views/expedientes/ExpedienteListView.vue'
 import ExpedienteCreateView from '@/views/expedientes/ExpedienteCreateView.vue'
 import ExpedienteShowView from '@/views/expedientes/ExpedienteShowView.vue'
+import UsuarioListView from '@/views/usuarios/UsuarioListView.vue'
+import AuditoriaListView from '@/views/auditoria/AuditoriaListView.vue'
+import AlertaListView from '@/views/alertas/AlertaListView.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 
 const router = createRouter({
@@ -57,6 +60,30 @@ const router = createRouter({
                     component: ExpedienteShowView,
                     meta: {
                         permiso: 'expedientes.ver'
+                    }
+                },
+                {
+                    path: 'usuarios',
+                    name: 'usuarios',
+                    component: UsuarioListView,
+                    meta: {
+                        permiso: 'usuarios.ver'
+                    }
+                },
+                {
+                    path: 'auditoria',
+                    name: 'auditoria',
+                    component: AuditoriaListView,
+                    meta: {
+                        permiso: 'auditoria.ver'
+                    }
+                },
+                {
+                    path: 'alertas',
+                    name: 'alertas',
+                    component: AlertaListView,
+                    meta: {
+                        permiso: 'alertas.ver'
                     }
                 },
             ]
