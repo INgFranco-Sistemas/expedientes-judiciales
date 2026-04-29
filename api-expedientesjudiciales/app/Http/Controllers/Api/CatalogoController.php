@@ -17,6 +17,7 @@ use App\Models\TipoDocumento;
 use App\Models\Prioridad;
 use App\Models\MotivoCierre;
 use App\Models\TipoAlerta;
+use App\Models\Usuario;
 
 class CatalogoController extends Controller
 {
@@ -144,5 +145,14 @@ class CatalogoController extends Controller
             'motivos_cierre' => MotivoCierre::where('estado', true)->orderBy('nombre')->get(),
             'tipos_alerta' => TipoAlerta::where('estado', true)->orderBy('nombre')->get(),
         ]);
+    }
+
+    public function usuariosActivos()
+    {
+        return response()->json(
+            Usuario::where('estado_usuario', 'ACTIVO')
+                ->orderBy('nombre_completo')
+                ->get(['id', 'username', 'nombre_completo'])
+        );
     }
 }

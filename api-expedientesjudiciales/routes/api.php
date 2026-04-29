@@ -81,6 +81,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/motivos-cierre', [CatalogoController::class, 'motivosCierre']);
             Route::get('/tipos-alerta', [CatalogoController::class, 'tiposAlerta']);
             Route::get('/todos', [CatalogoController::class, 'todos']);
+            Route::get('/usuarios-activos', [CatalogoController::class, 'usuariosActivos']);
         });
 
     /*

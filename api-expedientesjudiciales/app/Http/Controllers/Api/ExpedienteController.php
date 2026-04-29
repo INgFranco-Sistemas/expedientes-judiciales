@@ -12,6 +12,9 @@ class ExpedienteController extends Controller
 {
     public function index(Request $request)
     {
+        $usuario = $request->user()->load('perfil');
+        $perfil = mb_strtolower(trim($usuario->perfil?->nombre ?? ''));
+
         $query = Expediente::with([
             'tipoExpediente',
             'estadoExpediente',
@@ -20,6 +23,12 @@ class ExpedienteController extends Controller
             'materia',
             'especialidad',
         ])->orderBy('id', 'desc');
+
+
+        // SOLO GESTOR: ve sus expedientes asignados
+        if (str_contains($perfil, 'gestor')) {
+            $query->where('encargado_actual_id', $usuario->id);
+        }
 
         if ($request->filled('buscar')) {
         $buscar = $request->buscar;
@@ -162,6 +171,15 @@ class ExpedienteController extends Controller
 
     public function show(Expediente $expediente)
     {
+        $usuario = request()->user();
+        $perfil = $usuario->perfil?->nombre;
+
+        if ($perfil === 'Gestor Procuraduria' && $expediente->encargado_actual_id !== $usuario->id) {
+            return response()->json([
+                'message' => 'No tiene acceso a este expediente.'
+            ], 403);
+        }
+
         return response()->json([
             'expediente' => $expediente->load([
                 'tipoExpediente',

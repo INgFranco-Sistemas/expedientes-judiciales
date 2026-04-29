@@ -2,6 +2,9 @@
 import { onMounted, ref } from 'vue'
 import api from '@/services/api'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const auth = useAuthStore()
 
 const router = useRouter()
 
@@ -42,8 +45,8 @@ const cargarCatalogos = async () => {
     catalogos.value.estados_expediente = data.estados_expediente || []
     catalogos.value.prioridades = data.prioridades || []
 
-    const usuarios = await api.get('/usuarios?per_page=100')
-    catalogos.value.usuarios = usuarios.data.data || []
+    const usuarios = await api.get('/catalogos/usuarios-activos')
+    catalogos.value.usuarios = usuarios.data || []
 }
 
 const cargarExpedientes = async (page = 1) => {
@@ -126,7 +129,11 @@ onMounted(async () => {
             <p>Consulta, seguimiento y administración de expedientes institucionales.</p>
         </div>
 
-        <button class="btn-refresh" @click="nuevoExpediente">
+        <button
+            v-if="auth.tienePermiso('expedientes.crear')"
+            class="btn-refresh"
+            @click="nuevoExpediente"
+        >
             <i class="pi pi-plus"></i>
             Nuevo expediente
         </button>

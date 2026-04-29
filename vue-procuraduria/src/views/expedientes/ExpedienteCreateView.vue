@@ -69,8 +69,8 @@ const cargarDatos = async () => {
         ...data
         }
 
-        const usuarios = await api.get('/usuarios?per_page=100')
-        catalogos.value.usuarios = usuarios.data.data || []
+        const usuarios = await api.get('/catalogos/usuarios-activos')
+        catalogos.value.usuarios = usuarios.data || []
 
         const estadoRegistrado = catalogos.value.estados_expediente.find(
         (item) => item.nombre?.toLowerCase() === 'registrado'

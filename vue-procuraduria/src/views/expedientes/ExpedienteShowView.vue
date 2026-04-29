@@ -2,6 +2,9 @@
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/services/api'
+import { useAuthStore } from '@/stores/auth'
+
+const auth = useAuthStore()
 
 const route = useRoute()
 const router = useRouter()
@@ -942,7 +945,11 @@ onMounted(async () => {
                     </span>
 
                     <div class="hero-actions">
-                        <button class="btn-hero" @click="abrirEditarExpediente">
+                        <button
+                            v-if="auth.tienePermiso('expedientes.editar')"
+                            class="btn-hero"
+                            @click="abrirEditarExpediente"
+                        >
                             <i class="pi pi-pencil"></i>
                             Editar
                         </button>
@@ -952,14 +959,20 @@ onMounted(async () => {
                             {{ expediente.importante ? 'Quitar importante' : 'Marcar importante' }}
                         </button>
 
-                        <button v-if="expediente.estado_registro !== 'CERRADO'" class="btn-hero danger"
-                            @click="abrirCerrarExpediente">
+                        <button
+                            v-if="auth.tienePermiso('expedientes.cerrar') && expediente.estado_registro !== 'CERRADO'"
+                            class="btn-hero danger"
+                            @click="abrirCerrarExpediente"
+                        >
                             <i class="pi pi-lock"></i>
                             Cerrar
                         </button>
 
-                        <button v-if="expediente.estado_registro === 'CERRADO'" class="btn-hero success"
-                            @click="abrirReabrirExpediente">
+                        <button
+                            v-if="auth.tienePermiso('expedientes.reabrir') && expediente.estado_registro === 'CERRADO'"
+                            class="btn-hero success"
+                            @click="abrirReabrirExpediente"
+                        >
                             <i class="pi pi-lock-open"></i>
                             Reabrir
                         </button>
