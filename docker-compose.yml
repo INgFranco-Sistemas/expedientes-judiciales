@@ -27,7 +27,7 @@ services:
       APP_ENV: production
       APP_DEBUG: "false"
       APP_KEY: ${APP_KEY:-}
-      APP_URL: http://localhost:8001
+      APP_URL: https://sgej.regionhuanuco.gob.pe
       APP_LOCALE: es
       DB_CONNECTION: pgsql
       DB_HOST: db
@@ -57,7 +57,7 @@ services:
     build:
       context: ./vue-procuraduria
       args:
-        VITE_API_URL: http://localhost:8001/api
+        VITE_API_URL: /api
     restart: unless-stopped
     depends_on:
       - nginx
