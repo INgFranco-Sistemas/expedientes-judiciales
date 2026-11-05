@@ -1,10 +1,15 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
+import { useTheme } from '@/composables/useTheme'
+
 const router = useRouter()
+const route = useRoute()
 const auth = useAuthStore()
+
+const { theme, setTheme } = useTheme()
 
 const sidebarOpen = ref(false)
 
@@ -45,6 +50,7 @@ const cerrarMenuMovil = () => {
           v-if="puede('dashboard.ver')"
           to="/"
           class="menu-item"
+          active-class="menu-route-match"
           exact-active-class="active"
           @click="cerrarMenuMovil"
         >
@@ -55,8 +61,10 @@ const cerrarMenuMovil = () => {
         <RouterLink
           v-if="puede('expedientes.ver')"
           to="/expedientes"
-          class="menu-item"
-          active-class="active"
+          :class="[
+            'menu-item',
+            { active: route.path.startsWith('/expedientes') }
+          ]"
           @click="cerrarMenuMovil"
         >
           <i class="pi pi-folder-open"></i>
@@ -114,6 +122,23 @@ const cerrarMenuMovil = () => {
         </div>
 
         <div class="user-box">
+          <!-- Selector de apariencia -->
+          <div class="theme-selector">
+            <i class="pi pi-palette"></i>
+
+            <select
+              class="theme-select"
+              :value="theme"
+              @change="setTheme($event.target.value)"
+              aria-label="Seleccionar apariencia del sistema"
+              title="Apariencia del sistema"
+            >
+              <option value="light">☀ Claro</option>
+              <option value="dark">☾ Oscuro</option>
+              <option value="auto">▣ Automático</option>
+            </select>
+          </div>
+
           <div class="avatar-circle">
             {{ auth.usuario?.nombre_completo?.charAt(0) || 'U' }}
           </div>

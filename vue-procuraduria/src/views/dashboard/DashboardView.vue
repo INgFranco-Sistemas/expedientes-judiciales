@@ -3,6 +3,25 @@ import { onMounted, ref, computed } from 'vue'
 import api from '@/services/api'
 import Chart from 'primevue/chart'
 
+import { useTheme } from '@/composables/useTheme'
+
+const { theme } = useTheme()
+
+const sistemaOscuro = ref(
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+)
+
+const mediaOscura = window.matchMedia('(prefers-color-scheme: dark)')
+
+mediaOscura.addEventListener('change', (event) => {
+    sistemaOscuro.value = event.matches
+})
+
+const esOscuro = computed(() =>
+    theme.value === 'dark' ||
+    (theme.value === 'auto' && sistemaOscuro.value)
+)
+
 const cargando = ref(true)
 const error = ref('')
 
@@ -57,15 +76,74 @@ const chartEstados = computed(() => ({
     ]
 }))
 
-const chartOptions = {
-    plugins: {
-        legend: {
-        position: 'bottom'
+// Opciones del gráfico circular
+const chartOptionsTipos = computed(() => {
+    const colorTexto = esOscuro.value ? '#e2e8f0' : '#475569'
+
+    return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    color: colorTexto,
+                    padding: 20,
+                    font: {
+                        size: 13,
+                        weight: 'bold'
+                    }
+                }
+            }
         }
-    },
-    responsive: true,
-    maintainAspectRatio: false
-}
+    }
+})
+
+// Opciones del gráfico de barras
+const chartOptionsEstados = computed(() => {
+    const colorTexto = esOscuro.value ? '#e2e8f0' : '#475569'
+    const colorCuadricula = esOscuro.value
+        ? 'rgba(226, 232, 240, 0.12)'
+        : 'rgba(71, 85, 105, 0.12)'
+
+    return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    color: colorTexto,
+                    padding: 20,
+                    font: {
+                        size: 13,
+                        weight: 'bold'
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: colorTexto
+                },
+                grid: {
+                    color: colorCuadricula
+                }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: colorTexto,
+                    precision: 0
+                },
+                grid: {
+                    color: colorCuadricula
+                }
+            }
+        }
+    }
+})
 
 const formatoFecha = (fecha) => {
     if (!fecha) return 'Sin fecha'
@@ -158,7 +236,11 @@ onMounted(() => {
             </div>
 
             <div class="chart-box">
-                <Chart type="doughnut" :data="chartTipos" :options="chartOptions" />
+                <Chart
+                    type="doughnut"
+                    :data="chartTipos"
+                    :options="chartOptionsTipos"
+                />
             </div>
             </section>
 
@@ -169,7 +251,11 @@ onMounted(() => {
             </div>
 
             <div class="chart-box">
-                <Chart type="bar" :data="chartEstados" :options="chartOptions" />
+                <Chart
+                    type="bar"
+                    :data="chartEstados"
+                    :options="chartOptionsEstados"
+                />
             </div>
             </section>
         </div>

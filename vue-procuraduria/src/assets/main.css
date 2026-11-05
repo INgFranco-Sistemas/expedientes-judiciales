@@ -1924,3 +1924,266 @@ button {
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* ========================================
+   SIGEP - SELECTOR DE APARIENCIA
+======================================== */
+
+.theme-selector {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 12px;
+  background: var(--primary-soft);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.theme-selector > i {
+  color: var(--primary);
+  font-size: 17px;
+}
+
+.theme-select {
+  border: none !important;
+  background: transparent !important;
+  color: var(--primary) !important;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  min-width: 112px;
+}
+
+.theme-select option {
+  background: var(--card) !important;
+  color: var(--text) !important;
+}
+
+.theme-selector:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .theme-selector {
+    padding: 7px 9px;
+  }
+
+  .theme-select {
+    min-width: 90px;
+    max-width: 115px;
+    font-size: 12px;
+  }
+
+  .theme-selector > i {
+    display: none;
+  }
+}
+
+/* =========================================
+   SIGEP - MODO OSCURO INSTITUCIONAL
+========================================= */
+
+:root.sigep-dark {
+  color-scheme: dark;
+
+  --primary: #7db7f0;
+  --primary-dark: #0b2745;
+  --primary-soft: #203a55;
+
+  --accent: #e5c15b;
+
+  --bg: #0f172a;
+  --card: #1e293b;
+  --text: #e2e8f0;
+  --muted: #a6b5c9;
+  --border: #334155;
+
+  --danger: #f87171;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --info: #60a5fa;
+}
+
+/* Fondo general y barra superior */
+
+.sigep-dark body,
+.sigep-dark .main-area,
+.sigep-dark .content {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.sigep-dark .topbar {
+  background: var(--card);
+  border-color: var(--border);
+}
+
+/* Tarjetas y paneles */
+
+.sigep-dark .stat-card,
+.sigep-dark .panel-card,
+.sigep-dark .filter-card,
+.sigep-dark .table-card,
+.sigep-dark .form-card,
+.sigep-dark .tabs-card,
+.sigep-dark .loading-box,
+.sigep-dark .modal-card,
+.sigep-dark .error-card,
+.sigep-dark .login-card {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+/* Contenido interno */
+
+.sigep-dark .detail-item,
+.sigep-dark .detail-text,
+.sigep-dark .timeline-card,
+.sigep-dark .timeline-extra,
+.sigep-dark .alerta-card,
+.sigep-dark .list-item,
+.sigep-dark .table-row,
+.sigep-dark .empty-box {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+/* Tablas */
+
+.sigep-dark .professional-table {
+  background: var(--card);
+  color: var(--text);
+}
+
+.sigep-dark .professional-table thead,
+.sigep-dark .table-head {
+  background: var(--primary-soft);
+}
+
+.sigep-dark .professional-table th,
+.sigep-dark .professional-table td {
+  border-color: var(--border);
+}
+
+.sigep-dark .professional-table tbody tr:hover {
+  background: #293b52;
+}
+
+/* Formularios */
+
+.sigep-dark .form-group input,
+.sigep-dark .form-group select,
+.sigep-dark .form-group textarea,
+.sigep-dark .table-size select,
+.sigep-dark .theme-select {
+  background: #111c2e !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+.sigep-dark select option {
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+
+.sigep-dark input::placeholder,
+.sigep-dark textarea::placeholder {
+  color: var(--muted);
+}
+
+/* Pestañas de expediente */
+
+.sigep-dark .tabs-menu {
+  background: #162235;
+  border-color: var(--border);
+}
+
+/* Selector de apariencia */
+
+.sigep-dark .theme-selector {
+  background: var(--primary-soft);
+  border-color: var(--border);
+}
+
+.sigep-dark .theme-selector > i {
+  color: var(--primary);
+}
+
+/* Etiquetas y elementos auxiliares */
+
+.sigep-dark .timeline-meta span,
+.sigep-dark .alerta-meta span,
+.sigep-dark .selected-file-box {
+  background: var(--primary-soft);
+  border-color: var(--border);
+}
+
+/* Barra de desplazamiento */
+
+.sigep-dark ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+.sigep-dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.sigep-dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* =========================================
+   SIGEP - AJUSTES DE CONTRASTE MODO OSCURO
+========================================= */
+
+/* Tarjeta de estadísticas de usuarios */
+
+.sigep-dark .stat-card.dark strong,
+.sigep-dark .stat-card.dark i {
+  color: #e2e8f0 !important;
+}
+
+/* Mejorar contraste de títulos y textos */
+
+.sigep-dark .stat-card span,
+.sigep-dark .panel-header span,
+.sigep-dark .table-toolbar p,
+.sigep-dark .page-title p {
+  color: #b8c7dc;
+}
+
+/* Encabezados de las tablas */
+
+.sigep-dark .table-head,
+.sigep-dark .professional-table thead {
+  color: #e2e8f0;
+}
+
+.sigep-dark .professional-table th {
+  color: #c8dfff;
+}
+
+/* Filas de tablas */
+
+.sigep-dark .professional-table td,
+.sigep-dark .table-row {
+  color: #e2e8f0;
+}
+
+/* Mejorar contraste de las tarjetas */
+
+.sigep-dark .stat-card,
+.sigep-dark .panel-card {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Corregir tarjeta Usuarios activos */
+.sigep-dark .stat-card.dark strong,
+.sigep-dark .stat-card.dark i {
+    color: #e2e8f0 !important;
+}
