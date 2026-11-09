@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\AlertaController;
 use App\Http\Controllers\Api\AuditoriaController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ReasignacionExpedienteController;
+use App\Http\Controllers\Api\ReporteExpedienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,6 +109,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/reasignaciones', [ReasignacionExpedienteController::class, 'reasignar'])->middleware('permiso:expedientes.reasignar');
     Route::get('/reasignaciones/gestores-activos', [ReasignacionExpedienteController::class, 'gestoresActivos'])->middleware('permiso:expedientes.reasignar');
     Route::get('/expedientes', [ExpedienteController::class, 'index'])->middleware('permiso:expedientes.ver');
+
+    // OBSERVACIÓN N.º 03 - EXPORTACIÓN DE REPORTES
+    Route::get('/expedientes/exportar/excel', [ReporteExpedienteController::class, 'excel'])->middleware('permiso:expedientes.ver');
+    Route::get('/expedientes/exportar/pdf', [ReporteExpedienteController::class, 'pdf'])->middleware('permiso:expedientes.ver');
+
     Route::post('/expedientes', [ExpedienteController::class, 'store'])->middleware('permiso:expedientes.crear');
     Route::get('/expedientes/{expediente}', [ExpedienteController::class, 'show'])->middleware('permiso:expedientes.ver');
     Route::put('/expedientes/{expediente}', [ExpedienteController::class, 'update'])->middleware('permiso:expedientes.editar');

@@ -115,6 +115,51 @@ const nuevoExpediente = () => {
     router.push('/expedientes/nuevo')
 }
 
+
+const exportando = ref('')
+
+const exportarReporte = async (formato) => {
+    if (exportando.value) return
+
+    exportando.value = formato
+    error.value = ''
+
+    try {
+        const respuesta = await api.get(
+            `/expedientes/exportar/${formato}`,
+            { responseType: 'blob' }
+        )
+
+        const archivo = new Blob(
+            [respuesta.data],
+            {
+                type: formato === 'excel'
+                    ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    : 'application/pdf'
+            }
+        )
+
+        const url = URL.createObjectURL(archivo)
+        const enlace = document.createElement('a')
+
+        enlace.href = url
+        enlace.download = `mis_expedientes_${new Date().toISOString().slice(0, 10)}.${formato === 'excel' ? 'xlsx' : 'pdf'}`
+
+        document.body.appendChild(enlace)
+        enlace.click()
+        enlace.remove()
+
+        setTimeout(() => URL.revokeObjectURL(url), 1000)
+
+    } catch (e) {
+        error.value = 'No se pudo descargar el reporte.'
+        console.error('Error al exportar:', e)
+    } finally {
+        exportando.value = ''
+    }
+}
+
+
 onMounted(async () => {
     await cargarCatalogos()
     await cargarExpedientes()
@@ -124,19 +169,42 @@ onMounted(async () => {
 <template>
     <div class="expedientes-page">
         <div class="page-title dashboard-title-row">
-        <div>
-            <h2>Expedientes</h2>
-            <p>Consulta, seguimiento y administración de expedientes institucionales.</p>
-        </div>
+            <div>
+                <h2>Expedientes</h2>
+                <p>Consulta, seguimiento y administración de expedientes institucionales.</p>
+            </div>            
+            
+            <div
+                v-if="auth.tienePermiso('expedientes.ver')"
+                class="export-actions"
+            >
+                <button
+                    class="btn-export btn-export-excel"
+                    :disabled="!!exportando"
+                    @click="exportarReporte('excel')"
+                >
+                    <i class="pi pi-file-excel"></i>
+                    {{ exportando === 'excel' ? 'Generando...' : 'Exportar Excel' }}
+                </button>
 
-        <button
-            v-if="auth.tienePermiso('expedientes.crear')"
-            class="btn-refresh"
-            @click="nuevoExpediente"
-        >
-            <i class="pi pi-plus"></i>
-            Nuevo expediente
-        </button>
+                <button
+                    class="btn-export btn-export-pdf"
+                    :disabled="!!exportando"
+                    @click="exportarReporte('pdf')"
+                >
+                    <i class="pi pi-file-pdf"></i>
+                    {{ exportando === 'pdf' ? 'Generando...' : 'Exportar PDF' }}
+                </button>
+            </div>
+
+            <button
+                v-if="auth.tienePermiso('expedientes.crear')"
+                class="btn-refresh"
+                @click="nuevoExpediente"
+            >
+                <i class="pi pi-plus"></i>
+                Nuevo expediente
+            </button>
         </div>
 
         <section class="filter-card">
@@ -376,3 +444,80 @@ onMounted(async () => {
         </section>
     </div>
 </template>
+
+
+<style scoped>
+/* Contenedor de botones */
+.export-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Estilo general */
+.btn-export {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 11px 20px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+}
+
+.btn-export i {
+    font-size: 16px;
+}
+
+/* Excel: verde esmeralda */
+.btn-export-excel {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.22);
+}
+
+.btn-export-excel:hover:not(:disabled) {
+    background: linear-gradient(135deg, #15803d, #166534);
+    box-shadow: 0 6px 16px rgba(22, 163, 74, 0.35);
+    transform: translateY(-2px);
+}
+
+/* PDF: rojo elegante */
+.btn-export-pdf {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.22);
+}
+
+.btn-export-pdf:hover:not(:disabled) {
+    background: linear-gradient(135deg, #dc2626, #991b1b);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
+    transform: translateY(-2px);
+}
+
+/* Efecto al hacer clic */
+.btn-export:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+/* Accesibilidad */
+.btn-export:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+/* Mientras genera el archivo */
+.btn-export:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+</style>
