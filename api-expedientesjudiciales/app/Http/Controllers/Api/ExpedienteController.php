@@ -238,7 +238,7 @@ class ExpedienteController extends Controller
             'etapa_id' => ['nullable', 'exists:etapas,id'],
 
             'estado_expediente_id' => ['required', 'exists:estados_expediente,id'],
-            'encargado_actual_id' => ['required', 'exists:usuarios,id'],
+            'encargado_actual_id' => ['sometimes', 'required', 'integer', Rule::in([(int) $expediente->encargado_actual_id]),],
             'prioridad_id' => ['nullable', 'exists:prioridades,id'],
 
             'monto' => ['nullable', 'numeric', 'min:0'],

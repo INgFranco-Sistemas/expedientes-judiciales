@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\DocumentoController;
 use App\Http\Controllers\Api\AlertaController;
 use App\Http\Controllers\Api\AuditoriaController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\ReasignacionExpedienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +104,9 @@ Route::middleware('auth:sanctum')->group(function () {
     |--------------------------------------------------------------------------
     */
 
+    Route::get('/reasignaciones/expedientes-por-gestor', [ReasignacionExpedienteController::class, 'expedientesPorGestor'])->middleware('permiso:expedientes.reasignar');
+    Route::post('/reasignaciones', [ReasignacionExpedienteController::class, 'reasignar'])->middleware('permiso:expedientes.reasignar');
+    Route::get('/reasignaciones/gestores-activos', [ReasignacionExpedienteController::class, 'gestoresActivos'])->middleware('permiso:expedientes.reasignar');
     Route::get('/expedientes', [ExpedienteController::class, 'index'])->middleware('permiso:expedientes.ver');
     Route::post('/expedientes', [ExpedienteController::class, 'store'])->middleware('permiso:expedientes.crear');
     Route::get('/expedientes/{expediente}', [ExpedienteController::class, 'show'])->middleware('permiso:expedientes.ver');

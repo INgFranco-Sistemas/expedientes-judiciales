@@ -25,6 +25,7 @@ class PermisoSeeder extends Seeder
             ['codigo' => 'expedientes.eliminar', 'nombre' => 'Eliminar expedientes', 'modulo' => 'Expedientes'],
             ['codigo' => 'expedientes.cerrar', 'nombre' => 'Cerrar expedientes', 'modulo' => 'Expedientes'],
             ['codigo' => 'expedientes.reabrir', 'nombre' => 'Reabrir expedientes', 'modulo' => 'Expedientes'],
+            ['codigo' => 'expedientes.reasignar', 'nombre' => 'Reasignar y distribuir expedientes', 'modulo' => 'Expedientes'],
 
             ['codigo' => 'partes.ver', 'nombre' => 'Ver partes', 'modulo' => 'Partes'],
             ['codigo' => 'partes.crear', 'nombre' => 'Crear partes', 'modulo' => 'Partes'],

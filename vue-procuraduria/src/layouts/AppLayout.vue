@@ -72,6 +72,17 @@ const cerrarMenuMovil = () => {
         </RouterLink>
 
         <RouterLink
+          v-if="puede('expedientes.reasignar')"
+          to="/reasignaciones"
+          class="menu-item"
+          active-class="active"
+          @click="cerrarMenuMovil"
+        >
+          <i class="pi pi-arrow-right-arrow-left"></i>
+          <span>Reasignación de Expedientes</span>
+        </RouterLink>
+
+        <RouterLink
           v-if="puede('usuarios.ver')"
           to="/usuarios"
           class="menu-item"

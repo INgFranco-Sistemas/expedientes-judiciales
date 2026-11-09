@@ -11,6 +11,7 @@ import UsuarioListView from '@/views/usuarios/UsuarioListView.vue'
 import AuditoriaListView from '@/views/auditoria/AuditoriaListView.vue'
 import AlertaListView from '@/views/alertas/AlertaListView.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
+import ReasignacionView from '@/views/reasignaciones/ReasignacionView.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,14 @@ const router = createRouter({
                     component: ExpedienteListView,
                     meta: {
                         permiso: 'expedientes.ver'
+                    }
+                },
+                {
+                    path: 'reasignaciones',
+                    name: 'reasignaciones',
+                    component: ReasignacionView,
+                    meta: {
+                        permiso: 'expedientes.reasignar'
                     }
                 },
                 {
